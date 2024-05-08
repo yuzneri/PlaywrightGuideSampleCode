@@ -1,19 +1,163 @@
-// @ts-check
-const { test, expect } = require('@playwright/test');
+const {test, expect} = require('@playwright/test');
 
-test('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+test('add task', async ({page}) => {
+    await page.goto('https://yuzneri.github.io/todolist/todo.html');
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
+    await page.getByPlaceholder('やること').fill('カレーを作る');
+    await page.getByRole('button', {'name': '追加'}).click();
+
+    await expect(
+        page.getByRole('listitem').last().locator('.todo-text')
+    ).toHaveText('カレーを作る')
 });
 
-test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+test('toBeOK', async ({page}) => {
+    const response = await page.request.get('https://yuzneri.github.io/todolist/todo.html');
+    await expect(response).toBeOK();
+});
 
-  // Click the get started link.
-  await page.getByRole('link', { name: 'Get started' }).click();
+test('toHaveURL', async ({page}) => {
+    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+    await expect(page).toHaveURL(/todolist/);
+});
 
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+test('toHaveTitle', async ({page}) => {
+    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+    await expect(page).toHaveTitle('ToDo List');
+});
+
+test('toContainText', async ({page}) => {
+    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+    await expect(page.getByRole('heading'))
+        .toContainText('ToDo');
+});
+
+test('toHaveText', async ({page}) => {
+    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+    await expect(page.getByRole('heading'))
+        .toHaveText('ToDo List');
+});
+
+test('toContainTextMulti', async ({page}) => {
+    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+    await page.getByPlaceholder('やること').fill('カレーを作る');
+    await page.getByRole('button', {'name': '追加'}).click();
+
+    await expect(page.getByRole('listitem'))
+        .toContainText([/ToDoを追加してみましょう/, /カレーを作る/]);
+});
+
+test('toHaveTextMulti', async ({page}) => {
+    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+    await page.getByPlaceholder('やること').fill('カレーを作る');
+    await page.getByRole('button', {'name': '追加'}).click();
+
+    await expect(page.getByRole('listitem'))
+        .toHaveText([/ToDoを追加してみましょう/, /ToDoを削除してみましょう/, /カレーを作る/]);
+});
+
+test('toHaveValue', async ({page}) => {
+    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+
+    const locator = await page.getByPlaceholder('やること')
+
+    await locator.fill('カレーを作る');
+    await expect(locator).toHaveValue('カレーを作る');
+});
+
+test('toHaveValues', async ({page}) => {
+    await page.goto('https://yuzneri.github.io/todolist/form.html');
+
+    const locator = await page.getByRole('listbox');
+    await locator.selectOption(['カレー', 'ラーメン']);
+    await expect(locator).toHaveValues(['curry', 'ramen']);
+});
+
+test('toBeCheckedTrue', async ({page}) => {
+    await page.goto('https://yuzneri.github.io/todolist/form.html');
+    const locator = await page.getByRole('checkbox');
+    await locator.check();
+
+    await expect(locator).toBeChecked();
+});
+
+test('toBeCheckedFalse', async ({page}) => {
+    await page.goto('https://yuzneri.github.io/todolist/form.html');
+
+    const locator = await page.getByRole('checkbox');
+    await locator.uncheck()
+
+    await expect(locator).not.toBeChecked();
+    await expect(locator).toBeChecked({checked: false});
+});
+
+test('toBeEnabled', async ({page}) => {
+    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+    await page.getByPlaceholder('やること').fill('カレーを作る');
+
+    await expect(page.getByRole('button', {'name': '追加'})).toBeEnabled();
+});
+
+test('toBeDisabled', async ({page}) => {
+    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+    await page.getByPlaceholder('やること').clear();
+
+    await expect(page.getByRole('button', {'name': '追加'})).toBeDisabled();
+});
+
+test('toBeEditable', async ({page}) => {
+    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+
+    await expect(page.getByPlaceholder('やること')).toBeEditable();
+});
+
+test('toBeVisible', async ({page}) => {
+    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+
+    await page.getByPlaceholder('やること').clear();
+    await expect(page.locator('span.warn')).toBeVisible();
+});
+
+test('toBeHidden', async ({page}) => {
+    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+
+    await page.getByPlaceholder('やること').fill('カレーを作る');
+    await expect(page.locator('span.warn')).toBeHidden();
+});
+
+test('toHaveAttribute', async ({page}) => {
+    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+
+    const locator = page.getByRole('button', {'name': '追加'});
+    await expect(locator).toHaveAttribute('type', 'button');
+    await expect(locator).toHaveAttribute('disabled');
+});
+
+test('toHaveId', async ({page}) => {
+    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+
+    await page.getByPlaceholder('やること')
+    await expect(page.getByPlaceholder('やること')).toHaveId('new-todo');
+});
+
+test('toHaveClass', async ({page}) => {
+    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+
+    const locator = page.getByPlaceholder('やること')
+    await expect(locator).toHaveClass('input todo new');
+    await expect(locator).toHaveClass(/new/);
+    await expect(page.getByRole('listitem')).toHaveClass(['todo', 'todo']);
+});
+
+test('toHaveCSS', async ({page}) => {
+    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+
+    await expect(page.locator('span.warn')).toHaveCSS('font-size', '10px');
+});
+
+
+test('toHaveCount', async ({page}) => {
+    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+
+    await expect(page.locator('.todo-text')).toHaveCount(2);
 });

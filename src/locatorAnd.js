@@ -1,4 +1,5 @@
 const {chromium, firefox, webkit} = require('playwright');
+const {expect} = require("playwright/test");
 
 (async () => {
     const browser = await chromium.launch();
@@ -8,11 +9,12 @@ const {chromium, firefox, webkit} = require('playwright');
             height: 360,
         }
     });
+
     await page.goto('https://yuzneri.github.io/todolist/todo.html');
 
-    await page.screenshot({path: __filename.split('.').shift() + '.png'});
-    await page.screenshot({path: __filename.split('.').shift() + '_fullPage.png', fullPage: true});
-    await page.locator('#app').screenshot({path: __filename.split('.').shift() + '_app.png'});
+    await page.getByPlaceholder('やること').fill('カレーを作る');
+    await page.getByRole('button').and(page.getByText('追加')).click();
+    await page.locator('#todos').screenshot({path: __filename.split('.').shift() + '.png'});
 
     await browser.close();
 })();
