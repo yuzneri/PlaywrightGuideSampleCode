@@ -9,7 +9,7 @@ const {chromium, firefox, webkit} = require('playwright');
         }
     });
 
-    const response = await page.goto('https://yuzneri.github.io/todolist/todo.html');
+    const response = await page.goto('https://yuzneri.github.io/playwrighttodolist/');
     await page.getByRole('listitem').first().waitFor();
 
     console.log(await response.allHeaders());

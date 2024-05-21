@@ -10,7 +10,7 @@ const {expect} = require("playwright/test");
         }
     });
 
-    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+    await page.goto('https://yuzneri.github.io/playwrighttodolist/');
 
     await page.getByPlaceholder('やること').fill('カレーを作る');
     const jaButton = page.getByRole('button', {'name': '追加'})

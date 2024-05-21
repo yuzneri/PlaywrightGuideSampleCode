@@ -17,8 +17,8 @@ const {expect} = require("playwright/test");
     page.on('dialog', dialog => dialog.accept());
     await page
         .getByRole('listitem')
-        .filter({ has: page.getByText('ToDoを削除してみましょう') })
-        .getByRole('button', { name: '削除' })
+        .nth(1)
+        .getByRole('button', {name: '削除'})
         .click();
     await page.locator('#todos').screenshot({path: __filename.split('.').shift() + '.png'});
 

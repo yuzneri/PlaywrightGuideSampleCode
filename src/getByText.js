@@ -10,7 +10,7 @@ const {expect} = require("playwright/test");
         }
     });
 
-    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+    await page.goto('https://yuzneri.github.io/playwrighttodolist/');
     console.log(await page.getByText('todoを追加').isVisible());
     console.log(await page.getByText('todoを追加', {exact: true}).isVisible());
     console.log(await page.getByText('ToDoを追加してみましょう', {exact: true}).isVisible());

@@ -11,7 +11,7 @@ const fs = require('fs');
         }
     });
 
-    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+    await page.goto('https://yuzneri.github.io/playwrighttodolist/');
 
     page.on('dialog', dialog => dialog.accept());
     await page

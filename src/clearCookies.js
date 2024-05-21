@@ -13,7 +13,7 @@ const fs = require('fs');
 
     const cookies = JSON.parse(fs.readFileSync('cookies.json'));
     await page.context().addCookies(cookies)
-    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+    await page.goto('https://yuzneri.github.io/playwrighttodolist/');
     await page.locator('#todos').screenshot({path: __filename.split('.').shift() + '_before.png'});
 
     await page.context().clearCookies();

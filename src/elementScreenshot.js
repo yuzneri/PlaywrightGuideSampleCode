@@ -9,7 +9,7 @@ const {chromium, firefox, webkit} = require('playwright');
         }
     });
 
-    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+    await page.goto('https://yuzneri.github.io/playwrighttodolist/');
 
     await page.locator('#todos').screenshot({path: __filename.split('.').shift() + '.png'});
 

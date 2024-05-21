@@ -10,7 +10,7 @@ const {expect} = require("playwright/test");
         }
     });
 
-    await page.goto('https://yuzneri.github.io/todolist/todo.html');
+    await page.goto('https://yuzneri.github.io/playwrighttodolist/');
 
     const app = page.locator('#app');
     await app.getByPlaceholder('やること')

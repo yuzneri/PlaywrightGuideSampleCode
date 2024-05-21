@@ -9,7 +9,7 @@ const {chromium, firefox, webkit} = require('playwright');
         }
     });
 
-    const response = await page.goto('https://yuzneri.github.io/todolist/form.html');
+    const response = await page.goto('https://yuzneri.github.io/playwrighttodolist/form.html');
     await page.getByRole('textbox').first().fill('カレー');
     console.log(await page.getByRole('textbox').first().inputValue())
     await page.getByRole('textbox').first().clear();

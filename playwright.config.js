@@ -13,7 +13,7 @@ const { defineConfig, devices } = require('@playwright/test');
 module.exports = defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
-  fullyParallel: true,
+  fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
@@ -36,17 +36,54 @@ module.exports = defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      testMatch: /example\.spec\.js/,
     },
-
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
-    },
+      testMatch: /example\.spec\.js/,
 
+    },
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
+      testMatch: /example\.spec\.js/,
     },
+
+
+    {
+      name: 'project setup',
+      testMatch: /project\.setup\.js/,
+    },
+
+    {
+      name: 'project teardown',
+      testMatch: /project\.teardown\.js/,
+    },
+
+    {
+      name: 'hook test',
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: /hook\.spec\.js/,
+      dependencies: ['project setup'],
+      teardown: 'project teardown'
+    },
+
+    {
+      name: 'task setup',
+      testMatch: /task\.setup\.js/,
+    },
+    {
+      name: 'task chromium',
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: 'task.json',
+      },
+      dependencies: ['task setup'],
+      testMatch: /task\.spec\.js/,
+    },
+
+
 
     /* Test against mobile viewports. */
     // {
@@ -75,5 +112,7 @@ module.exports = defineConfig({
   //   url: 'http://127.0.0.1:3000',
   //   reuseExistingServer: !process.env.CI,
   // },
-});
 
+  globalSetup: require.resolve('./global.setup'),
+  globalTeardown: require.resolve('./global.teardown'),
+});
